@@ -142,7 +142,11 @@ Notes:
 
 Conclusion: Phase 4 foundational Admin core is complete.
 
-### Session 7 — Phase 5 Operator Flow
+### Session 8 — Production Deployment Investigation
+- Investigated application error `Digest: 992858187` on production Vercel deployment.
+- Identified that the `nextjs-export` directory (containing legacy reference code) is being picked up by the production build process, causing TypeScript validation errors that crash the build.
+- Documentation added to `AGENTS.md` regarding this known build blocker.
+- Remediation: The `nextjs-export` folder must be deleted from the repository to resolve the deployment issue.
 - Re-read locked PRD sections 20 (Operator Progress Update), 23 (Operator UI/UX Decisions).
 - Built `/tasks` page per PRD §23.1: Tabs (Aktif/Arsip), search bar, filter chips (Terlambat/Dekat/Berjalan), month selector.
 - Built `ItemCard` component per §23.2-23.3: Aktif variant with progress stages, dept chips, last activity row; Arsip variant (read-only).

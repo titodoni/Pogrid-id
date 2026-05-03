@@ -50,3 +50,6 @@
 ## Workflow for future agents
 - Before coding, re-read relevant locked PRD sections for the feature being touched.
 - Keep this file compact and evidence-based: only retain guidance verified from repo files.
+
+## Known Build Blockers
+- The `nextjs-export` directory contains non-functional, legacy reference code. It MUST be deleted to allow production builds to succeed, as Next.js/TypeScript attempts to validate it during build time. Failure to delete it results in build-time type errors.
