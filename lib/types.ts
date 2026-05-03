@@ -20,6 +20,16 @@ export type ReworkType = 'MINOR' | 'MAJOR';
 export type ItemSource = 'ORIGINAL' | 'REWORK' | 'RETURN';
 export type ProblemSource = 'OPERATOR' | 'SYSTEM';
 
+export type NotificationType =
+  | 'NEW_PO'
+  | 'STAGE_ADVANCE'
+  | 'PROBLEM_REPORTED'
+  | 'DRAWING_REDRAW'
+  | 'FLAG_ESCALATED'
+  | 'ITEM_REWORK'
+  | 'ITEM_DONE'
+  | 'FINANCE_PAID';
+
 export type AuditAction =
   | 'PROGRESS_UPDATE'
   | 'STAGE_ADVANCE'
@@ -41,3 +51,11 @@ export type AuditAction =
   | 'SELF_PIN_CHANGE'
   | 'USER_CREATED'
   | 'USER_TOGGLED';
+
+export type StageTimestampField =
+  | 'drafting_started_at'
+  | 'purchasing_started_at'
+  | 'production_started_at'
+  | 'qc_started_at'
+  | 'delivery_started_at'
+  | 'done_at';

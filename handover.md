@@ -40,6 +40,15 @@
 - Added compact PRD build sequence for future OpenCode sessions.
 - Preserved repo-specific constraints and commands.
 
+### Session 4 — Phase 2 domain helpers
+- Re-read locked PRD sections for roles, data model string unions, stage flow, production logic, flags, finance status computation, problem reporting, and notifications.
+- Extended shared constants/types for static roles, notification types, stage timestamp fields, item/PO/invoice statuses, and flag priority.
+- Added `lib/domain.ts` with role helpers, permission checks, stage transition helpers, work type parsing, production auto-advance checks, PO status computation, and Asia/Jakarta urgency flag computation.
+- Added `lib/audit.ts` for typed AuditLog creation and value serialization.
+- Added `lib/notifications.ts` for role/user-targeted in-app notification creation and PRD event recipient helpers.
+- Ran `npm run typecheck` successfully.
+- Ran `npm run lint` successfully after retrying with a longer timeout.
+
 ## Phase Status
 
 ### Phase 1 — Foundation Hardening
@@ -64,5 +73,6 @@ Note:
 Conclusion: Phase 1 is complete.
 
 ## Next Recommended Work
-- Start Phase 2: shared domain helpers for roles, flags, PO/item statuses, stage transitions, audit logs, and notifications.
+- Continue Phase 2 by wiring these helpers into auth/session and the first protected routes.
+- Start Phase 3: authentication/session pages and actions (`/login`, role redirects, logout, PIN change/reset, `/superadmin`).
 - Re-read relevant locked PRD sections before implementing each feature.
