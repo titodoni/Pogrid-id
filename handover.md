@@ -49,6 +49,15 @@
 - Ran `npm run typecheck` successfully.
 - Ran `npm run lint` successfully after retrying with a longer timeout.
 
+### Session 5 — Phase 3 auth/session
+- Re-read locked PRD sections for access layers, authentication/session, routes, PIN management, and admin audit actions.
+- Extended `lib/session.ts` with session set/clear helpers, protected route guards, and role-home redirects.
+- Added `lib/pins.ts` for 4-digit staff PIN validation, easy PIN generation, bcrypt hashing/comparison, and 6-digit superadmin PIN comparison.
+- Implemented `/login` with active-user selection, PIN server action, wrong-PIN feedback, Forgot PIN WhatsApp deep links, and role-home redirects.
+- Added `/logout`, `/profile` self PIN change, `/settings/users` admin PIN reset, and hidden `/superadmin` platform entry shell.
+- Added protected placeholder home routes for `/pos`, `/dashboard`, `/finance`, and `/tasks` so role redirects resolve.
+- Ran `npm run lint`, `npm run typecheck`, and `npm run build` successfully.
+
 ## Phase Status
 
 ### Phase 1 — Foundation Hardening
@@ -72,7 +81,36 @@ Note:
 
 Conclusion: Phase 1 is complete.
 
+### Phase 2 — Shared Domain Helpers
+Status: passed.
+
+Completed:
+- Shared roles/status/type unions are available in `lib/types.ts`.
+- Shared constants for roles, flags, statuses, and stage timestamps are available in `lib/constants.ts`.
+- Domain helper functions exist for roles, permissions, stage transitions, work type parsing, production auto-advance, PO finance status, and urgency flags.
+- AuditLog and Notification creation helpers exist.
+
+Conclusion: Phase 2 is complete.
+
+### Phase 3 — Auth & Session
+Status: passed for foundational auth.
+
+Completed:
+- `/login` authenticates active users with bcrypt PIN checks and iron-session.
+- Role-home redirects are wired for ADMIN, dashboard roles, FINANCE, DRAFTER, PURCHASING, QC, DELIVERY, and `OPERATOR_*`.
+- Sessions are persistent and only cleared by `/logout`.
+- `/profile` supports self PIN change without old PIN and logs `SELF_PIN_CHANGE`.
+- `/settings/users` supports Admin PIN reset with easy PIN generation and logs `PIN_RESET`.
+- `/superadmin` exists as hidden route with 6-digit PIN entry and a platform management shell.
+- Protected placeholder routes exist for the next feature phases.
+
+Notes:
+- `/login` is server-rendered and functional; the PRD bottom-drawer/numpad interaction can be refined later when UI polish begins.
+- `/superadmin` reads `SUPER_ADMIN_PIN`; if the value starts with bcrypt `$2`, it is compared as a hash, otherwise it is compared as the sample 6-digit env value.
+
+Conclusion: Phase 3 foundational auth is complete.
+
 ## Next Recommended Work
-- Continue Phase 2 by wiring these helpers into auth/session and the first protected routes.
-- Start Phase 3: authentication/session pages and actions (`/login`, role redirects, logout, PIN change/reset, `/superadmin`).
+- Start Phase 4: Admin core (`/pos`, `/po`, `/pos/new`, `/pos/[id]`, `/masalah`, `/settings`).
+- Replace auth placeholder destination pages as each protected module is implemented.
 - Re-read relevant locked PRD sections before implementing each feature.
