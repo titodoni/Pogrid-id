@@ -85,6 +85,14 @@ export function assertInvoiceStatus(status: string): asserts status is InvoiceSt
   }
 }
 
+export function validateInvoiceTransition(from: InvoiceStatus, to: InvoiceStatus): boolean {
+  if (from === to) return true;
+  if (from === 'PENDING' && to === 'INVOICED') return true;
+  if (from === 'INVOICED' && to === 'PAID') return true;
+  if (from === 'PAID' && to === 'INVOICED') return true; // Allowed for correction
+  return false;
+}
+
 export function parseWorkType(workType: string) {
   const parsed: unknown = JSON.parse(workType);
   if (!Array.isArray(parsed) || !parsed.every((value) => typeof value === 'string')) {
