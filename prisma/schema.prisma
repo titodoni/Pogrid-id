@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  name      String
+  pin       String
+  role      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Department {
+  id             String         @id @default(cuid())
+  name           String         @unique
+  order          Int
+  active         Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  itemProgresses ItemProgress[]
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  pos       PO[]
+}
+
+model PO {
+  id                 String   @id @default(cuid())
+  po_internal_number String   @unique
+  po_client_number   String
+  clientId           String
+  due_date           DateTime
+  urgency_flag       String   @default("NORMAL")
+  notes              String?
+  status             String   @default("ACTIVE")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  client             Client   @relation(fields: [clientId], references: [id])
+  items              Item[]
+}
+
+model Item {
+  id                     String         @id @default(cuid())
+  poId                   String
+  name                   String
+  qty                    Int
+  work_type              String
+  status                 String         @default("DRAFTING")
+  drawing_approved       Boolean        @default(false)
+  drawing_revision       Int            @default(0)
+  purchasing_progress    Int            @default(0)
+  is_rework              Boolean        @default(false)
+  rework_type            String?
+  rework_reason          String?
+  source                 String         @default("ORIGINAL")
+  parentItemId           String?
+  invoice_status         String         @default("PENDING")
+  invoiced_at            DateTime?
+  paid_at                DateTime?
+  drafting_started_at    DateTime?
+  purchasing_started_at  DateTime?
+  production_started_at  DateTime?
+  qc_started_at          DateTime?
+  delivery_started_at    DateTime?
+  done_at                DateTime?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  po                     PO             @relation(fields: [poId], references: [id])
+  parent                 Item?          @relation("ItemLineage", fields: [parentItemId], references: [id])
+  children               Item[]         @relation("ItemLineage")
+  progresses             ItemProgress[]
+  problems               Problem[]
+  auditLogs              AuditLog[]
+}
+
+model ItemProgress {
+  id           String     @id @default(cuid())
+  itemId       String
+  departmentId String
+  progress     Int        @default(0)
+  started_at   DateTime?
+  completed_at DateTime?
+  updatedAt    DateTime   @updatedAt
+  item         Item       @relation(fields: [itemId], references: [id])
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@unique([itemId, departmentId])
+}
+
+model Problem {
+  id              String    @id @default(cuid())
+  itemId          String
+  reportedBy      String
+  source          String    @default("OPERATOR")
+  note            String
+  resolved        Boolean   @default(false)
+  resolvedBy      String?
+  resolvedAt      DateTime?
+  resolution_note String?
+  createdAt       DateTime  @default(now())
+  item            Item      @relation(fields: [itemId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  itemId    String?
+  poId      String?
+  userId    String
+  action    String
+  fromValue String?
+  toValue   String?
+  metadata  String?
+  createdAt DateTime @default(now())
+  item      Item?    @relation(fields: [itemId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  message   String
+  itemId    String?
+  poId      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model PoSequence {
+  id       String @id @default("singleton")
+  year     Int
+  sequence Int    @default(0)
+}
+
+model SystemConfig {
+  id             String   @id @default("singleton")
+  clientName     String   @default("POgrid Client")
+  brandColor     String   @default("#14b8a6")
+  brandColorDark String   @default("#0d9488")
+  logoUrl        String?
+  poPrefix       String   @default("PO-[YYYY]-[SEQ]")
+  adminWaNumber  String?
+  flagThreshold1 Int      @default(7)
+  flagThreshold2 Int      @default(3)
+  updatedAt      DateTime @updatedAt
+}

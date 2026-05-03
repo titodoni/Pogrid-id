@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand:        #14b8a6;
+  --color-brand-dark:   #0d9488;
+  --color-brand-light:  #ccfbf1;
+  --color-warning:      #F97316;
+  --color-danger:       #EF4444;
+  --color-blood:        #7F1D1D;
+  --color-success:      #16A34A;
+  --color-navy:         #1D3B4D;
+
+  --font-family-sans:   'Inter', sans-serif;
+
+  --animate-slide-up:     slide-up 300ms ease-out forwards;
+  --animate-fade-out:     fade-out 250ms ease-out forwards;
+  --animate-fade-in:      fade-in 250ms ease-in forwards;
+  --animate-shake:        shake 400ms ease-in-out;
+  --animate-pulse-rework: pulse-rework 2s ease-in-out infinite;
+}
+
+:root {
+  --color-bg:      #F8F9FA;
+  --color-surface: #FFFFFF;
+  --color-text:    #1A1A2E;
+  --color-muted:   #6B7280;
+  --color-border:  #E5E7EB;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 300ms ease-out forwards; }
+
+@keyframes fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+.animate-fade-out { animation: fade-out 250ms ease-out forwards; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 250ms ease-in forwards; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.animate-shake { animation: shake 400ms ease-in-out; }
+
+@keyframes pulse-rework {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+.animate-pulse-rework { animation: pulse-rework 2s ease-in-out infinite; }
