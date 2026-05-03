@@ -108,7 +108,8 @@ model Problem {
   itemId          String
   reportedBy      String
   source          String    @default("OPERATOR")
-  note            String
+  category        String
+  note            String?
   resolved        Boolean   @default(false)
   resolvedBy      String?
   resolvedAt      DateTime?
