@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "Item" ADD COLUMN     "spec" TEXT,
+ADD COLUMN     "unit" TEXT NOT NULL DEFAULT 'pcs';
+
+-- AlterTable
+ALTER TABLE "PO" ADD COLUMN     "is_urgent" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "is_vendor_job" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "po_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

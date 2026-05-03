@@ -41,6 +41,9 @@ model PO {
   po_client_number   String
   clientId           String
   due_date           DateTime
+  po_date            DateTime @default(now())
+  is_urgent          Boolean  @default(false)
+  is_vendor_job      Boolean  @default(false)
   urgency_flag       String   @default("NORMAL")
   notes              String?
   status             String   @default("ACTIVE")
@@ -54,6 +57,8 @@ model Item {
   id                     String         @id @default(cuid())
   poId                   String
   name                   String
+  spec                   String?
+  unit                   String         @default("pcs")
   qty                    Int
   work_type              String
   status                 String         @default("DRAFTING")
